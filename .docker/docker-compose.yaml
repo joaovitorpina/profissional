@@ -1,0 +1,31 @@
+services:
+  iqs-api:
+    container_name: profissionais-service
+    build:
+      context: ../
+      dockerfile: ./.docker/Dockerfile
+    extra_hosts:
+      - 'host.docker.internal:172.17.0.1'
+    depends_on:
+      - mysql
+    ports:
+      - '3010:8080'
+    networks:
+      - iqs-network
+
+  mysql:
+    container_name: mysql
+    image: mysql/mysql-server:8.0.28-1.2.7-server
+    ports:
+      - 3306:3306
+    extra_hosts:
+      - 'host.docker.internal:172.17.0.1'
+    networks:
+      - iqs-network
+    volumes:
+      - ./config:/docker-entrypoint-initdb.d
+      - ./data/mysql:/var/lib/mysql
+
+networks:
+  iqs-network:
+    driver: bridge
