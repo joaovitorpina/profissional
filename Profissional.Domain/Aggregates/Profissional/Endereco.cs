@@ -4,12 +4,22 @@ namespace Profissional.Domain.Aggregates.Profissional;
 
 public class Endereco : ValueObject
 {
-    public string? Logradouro { get; private set; }
-    public string? Numero { get; private set; }
-    public string? Bairro { get; private set; }
-    public string Cidade { get; private set; }
-    public string Estado { get; private set; }
-    public long? Cep { get; private set; }
+    public Endereco(string? logradouro, string? numero, string? bairro, string cidade, string estado, long? cep)
+    {
+        Logradouro = logradouro;
+        Numero = numero;
+        Bairro = bairro;
+        Cidade = cidade;
+        Estado = estado;
+        Cep = cep;
+    }
+
+    public string? Logradouro { get; }
+    public string? Numero { get; }
+    public string? Bairro { get; }
+    public string Cidade { get; }
+    public string Estado { get; }
+    public long? Cep { get; }
 
 
     protected override IEnumerable<object?> GetEqualityComponents()

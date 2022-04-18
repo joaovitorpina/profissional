@@ -16,6 +16,5 @@ public class Whatsapp : ValueObject
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return Numero;
-        yield return Principal;
     }
 }

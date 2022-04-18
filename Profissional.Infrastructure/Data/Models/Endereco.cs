@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace Profissional.Infrastructure.Data.Models;
 
 public class Endereco
@@ -8,16 +6,15 @@ public class Endereco
     {
     }
 
-    public Endereco(Profissional profissional, string cidade, string estado) : this()
+    public Endereco(string cidade, string estado) : this()
     {
-        Profissional = profissional;
         Cidade = cidade;
         Estado = estado;
     }
 
-    [Key] public int ProfissionalId { get; set; }
+    public int ProfissionalId { get; set; }
 
-    public Profissional Profissional { get; set; }
+    public ProfissionalModel ProfissionalModel { get; set; }
     public string? Logradouro { get; set; }
     public string? Numero { get; set; }
     public string? Bairro { get; set; }

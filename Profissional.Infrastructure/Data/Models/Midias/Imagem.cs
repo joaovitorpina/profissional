@@ -8,7 +8,7 @@ public class Imagem : MidiaAbstract
     {
     }
 
-    public Imagem(Profissional profissional, string titulo, string url) : base(profissional, titulo, url,
+    public Imagem(ProfissionalModel profissionalModel, string titulo, string url) : base(profissionalModel, titulo, url,
         TipoMidiaEnum.Imagem)
     {
     }

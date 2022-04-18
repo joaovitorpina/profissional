@@ -19,7 +19,7 @@ namespace Profissional.Infrastructure.Data.Migrations
                 .HasAnnotation("ProductVersion", "6.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("EspecialidadeProfissional", b =>
+            modelBuilder.Entity("EspecialidadeProfissionalModel", b =>
                 {
                     b.Property<int>("EspecialidadesId")
                         .HasColumnType("int")
@@ -30,12 +30,12 @@ namespace Profissional.Infrastructure.Data.Migrations
                         .HasColumnName("profissionais_id");
 
                     b.HasKey("EspecialidadesId", "ProfissionaisId")
-                        .HasName("pk_especialidade_profissional");
+                        .HasName("pk_especialidade_profissional_model");
 
                     b.HasIndex("ProfissionaisId")
-                        .HasDatabaseName("ix_especialidade_profissional_profissionais_id");
+                        .HasDatabaseName("ix_especialidade_profissional_model_profissionais_id");
 
-                    b.ToTable("especialidade_profissional", (string)null);
+                    b.ToTable("especialidade_profissional_model", (string)null);
                 });
 
             modelBuilder.Entity("Profissional.Infrastructure.Data.Models.Convenio", b =>
@@ -48,8 +48,15 @@ namespace Profissional.Infrastructure.Data.Migrations
                         .HasColumnType("varchar(255)")
                         .HasColumnName("descricao");
 
+                    b.Property<int>("ProfissionalModelId")
+                        .HasColumnType("int")
+                        .HasColumnName("profissional_model_id");
+
                     b.HasKey("ProfissionalId", "Descricao")
                         .HasName("pk_convenios");
+
+                    b.HasIndex("ProfissionalModelId")
+                        .HasDatabaseName("ix_convenios_profissional_model_id");
 
                     b.ToTable("convenios", (string)null);
                 });
@@ -60,13 +67,21 @@ namespace Profissional.Infrastructure.Data.Migrations
                         .HasColumnType("int")
                         .HasColumnName("profissional_id");
 
-                    b.Property<string>("Bairro")
-                        .HasColumnType("longtext")
-                        .HasColumnName("bairro");
+                    b.Property<string>("Numero")
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("numero");
 
                     b.Property<long?>("Cep")
                         .HasColumnType("bigint")
                         .HasColumnName("cep");
+
+                    b.Property<string>("Logradouro")
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("logradouro");
+
+                    b.Property<string>("Bairro")
+                        .HasColumnType("longtext")
+                        .HasColumnName("bairro");
 
                     b.Property<string>("Cidade")
                         .IsRequired()
@@ -78,16 +93,12 @@ namespace Profissional.Infrastructure.Data.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("estado");
 
-                    b.Property<string>("Logradouro")
-                        .HasColumnType("longtext")
-                        .HasColumnName("logradouro");
-
-                    b.Property<string>("Numero")
-                        .HasColumnType("longtext")
-                        .HasColumnName("numero");
-
-                    b.HasKey("ProfissionalId")
+                    b.HasKey("ProfissionalId", "Numero", "Cep", "Logradouro")
                         .HasName("pk_enderecos");
+
+                    b.HasIndex("ProfissionalId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_enderecos_profissional_id");
 
                     b.ToTable("enderecos", (string)null);
                 });
@@ -140,15 +151,22 @@ namespace Profissional.Infrastructure.Data.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("discriminator");
 
+                    b.Property<int>("ProfissionalModelId")
+                        .HasColumnType("int")
+                        .HasColumnName("profissional_model_id");
+
                     b.HasKey("ProfissionalId", "Titulo", "Url", "TipoMidia")
                         .HasName("pk_midias");
+
+                    b.HasIndex("ProfissionalModelId")
+                        .HasDatabaseName("ix_midias_profissional_model_id");
 
                     b.ToTable("midias", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("MidiaAbstract");
                 });
 
-            modelBuilder.Entity("Profissional.Infrastructure.Data.Models.Profissional", b =>
+            modelBuilder.Entity("Profissional.Infrastructure.Data.Models.ProfissionalModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -268,11 +286,15 @@ namespace Profissional.Infrastructure.Data.Migrations
                         .HasColumnType("int")
                         .HasColumnName("profissional_id");
 
+                    b.Property<int>("ProfissionalModelId")
+                        .HasColumnType("int")
+                        .HasColumnName("profissional_model_id");
+
                     b.HasKey("Descricao", "ProfissionalId")
                         .HasName("pk_tratamentos");
 
-                    b.HasIndex("ProfissionalId")
-                        .HasDatabaseName("ix_tratamentos_profissional_id");
+                    b.HasIndex("ProfissionalModelId")
+                        .HasDatabaseName("ix_tratamentos_profissional_model_id");
 
                     b.ToTable("tratamentos", (string)null);
                 });
@@ -291,8 +313,15 @@ namespace Profissional.Infrastructure.Data.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("numero");
 
+                    b.Property<int>("ProfissionalModelId")
+                        .HasColumnType("int")
+                        .HasColumnName("profissional_model_id");
+
                     b.HasKey("ProfissionalId", "Principal", "Numero")
                         .HasName("pk_whatsapps");
+
+                    b.HasIndex("ProfissionalModelId")
+                        .HasDatabaseName("ix_whatsapps_profissional_model_id");
 
                     b.ToTable("whatsapps", (string)null);
                 });
@@ -323,45 +352,45 @@ namespace Profissional.Infrastructure.Data.Migrations
                     b.HasDiscriminator().HasValue("Video");
                 });
 
-            modelBuilder.Entity("EspecialidadeProfissional", b =>
+            modelBuilder.Entity("EspecialidadeProfissionalModel", b =>
                 {
                     b.HasOne("Profissional.Infrastructure.Data.Models.Especialidade", null)
                         .WithMany()
                         .HasForeignKey("EspecialidadesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_especialidade_profissional_especialidades_especialidades_id");
+                        .HasConstraintName("fk_especialidade_profissional_model_especialidades_especialidad");
 
-                    b.HasOne("Profissional.Infrastructure.Data.Models.Profissional", null)
+                    b.HasOne("Profissional.Infrastructure.Data.Models.ProfissionalModel", null)
                         .WithMany()
                         .HasForeignKey("ProfissionaisId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_especialidade_profissional_profissionais_profissionais_id");
+                        .HasConstraintName("fk_especialidade_profissional_model_profissionais_profissionais");
                 });
 
             modelBuilder.Entity("Profissional.Infrastructure.Data.Models.Convenio", b =>
                 {
-                    b.HasOne("Profissional.Infrastructure.Data.Models.Profissional", "Profissional")
+                    b.HasOne("Profissional.Infrastructure.Data.Models.ProfissionalModel", "ProfissionalModel")
                         .WithMany("Convenios")
-                        .HasForeignKey("ProfissionalId")
+                        .HasForeignKey("ProfissionalModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_convenios_profissionais_profissional_id");
+                        .HasConstraintName("fk_convenios_profissionais_profissional_model_id");
 
-                    b.Navigation("Profissional");
+                    b.Navigation("ProfissionalModel");
                 });
 
             modelBuilder.Entity("Profissional.Infrastructure.Data.Models.Endereco", b =>
                 {
-                    b.HasOne("Profissional.Infrastructure.Data.Models.Profissional", "Profissional")
+                    b.HasOne("Profissional.Infrastructure.Data.Models.ProfissionalModel", "ProfissionalModel")
                         .WithOne("Endereco")
                         .HasForeignKey("Profissional.Infrastructure.Data.Models.Endereco", "ProfissionalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_enderecos_profissionais_profissional_id");
+                        .HasConstraintName("fk_enderecos_profissionais_profissional_model_id");
 
-                    b.Navigation("Profissional");
+                    b.Navigation("ProfissionalModel");
                 });
 
             modelBuilder.Entity("Profissional.Infrastructure.Data.Models.Especialidade", b =>
@@ -378,17 +407,17 @@ namespace Profissional.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Profissional.Infrastructure.Data.Models.Midias.MidiaAbstract", b =>
                 {
-                    b.HasOne("Profissional.Infrastructure.Data.Models.Profissional", "Profissional")
+                    b.HasOne("Profissional.Infrastructure.Data.Models.ProfissionalModel", "ProfissionalModel")
                         .WithMany("Midias")
-                        .HasForeignKey("ProfissionalId")
+                        .HasForeignKey("ProfissionalModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_midias_profissionais_profissional_id1");
+                        .HasConstraintName("fk_midias_profissionais_profissional_model_id");
 
-                    b.Navigation("Profissional");
+                    b.Navigation("ProfissionalModel");
                 });
 
-            modelBuilder.Entity("Profissional.Infrastructure.Data.Models.Profissional", b =>
+            modelBuilder.Entity("Profissional.Infrastructure.Data.Models.ProfissionalModel", b =>
                 {
                     b.HasOne("Profissional.Infrastructure.Data.Models.TipoProfissional", "TipoProfissional")
                         .WithMany()
@@ -402,29 +431,29 @@ namespace Profissional.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Profissional.Infrastructure.Data.Models.Tratamento", b =>
                 {
-                    b.HasOne("Profissional.Infrastructure.Data.Models.Profissional", "Profissional")
+                    b.HasOne("Profissional.Infrastructure.Data.Models.ProfissionalModel", "ProfissionalModel")
                         .WithMany("Tratamentos")
-                        .HasForeignKey("ProfissionalId")
+                        .HasForeignKey("ProfissionalModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_tratamentos_profissionais_profissional_id");
+                        .HasConstraintName("fk_tratamentos_profissionais_profissional_model_id");
 
-                    b.Navigation("Profissional");
+                    b.Navigation("ProfissionalModel");
                 });
 
             modelBuilder.Entity("Profissional.Infrastructure.Data.Models.Whatsapp", b =>
                 {
-                    b.HasOne("Profissional.Infrastructure.Data.Models.Profissional", "Profissional")
+                    b.HasOne("Profissional.Infrastructure.Data.Models.ProfissionalModel", "ProfissionalModel")
                         .WithMany("Whatsapps")
-                        .HasForeignKey("ProfissionalId")
+                        .HasForeignKey("ProfissionalModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_whatsapps_profissionais_profissional_id");
+                        .HasConstraintName("fk_whatsapps_profissionais_profissional_model_id");
 
-                    b.Navigation("Profissional");
+                    b.Navigation("ProfissionalModel");
                 });
 
-            modelBuilder.Entity("Profissional.Infrastructure.Data.Models.Profissional", b =>
+            modelBuilder.Entity("Profissional.Infrastructure.Data.Models.ProfissionalModel", b =>
                 {
                     b.Navigation("Convenios");
 

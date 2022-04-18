@@ -14,21 +14,15 @@ public class Profissional : Entity, IAggregateRoot
     private readonly HashSet<string> _tratamentos;
     private readonly HashSet<Whatsapp> _whatsapps;
 
-    protected Profissional()
-    {
-        _tratamentos = new HashSet<string>();
-        _convenios = new HashSet<string>();
-        _midias = new List<MidiaAbstract>();
-        _especialidades = new HashSet<Especialidade>();
-        _whatsapps = new HashSet<Whatsapp>();
-    }
-
     public Profissional(string nome, string urlAmigavel, string sobre, Endereco endereco,
         TipoProfissional.TipoProfissional tipoProfissional, int unidadeId, string imagemUrlPerfil,
         string? conselho = null,
         string? numeroIdentificacao = null, long? telefone = default, long? celular = default, string? email = null,
         string? site = null, string? facebook = null, string? instagram = null, string? youtube = null,
-        string? linkedin = null, bool recomendado = false, bool status = true) : this()
+        string? linkedin = null, bool recomendado = false, bool status = true, int? id = null,
+        HashSet<string>? tratamentos = null,
+        HashSet<string>? convenios = null, List<MidiaAbstract>? midias = null,
+        HashSet<Especialidade>? especialidades = null, HashSet<Whatsapp>? whatsapps = null) : base(id)
     {
         Nome = nome;
         UrlAmigavel = urlAmigavel;
@@ -49,6 +43,11 @@ public class Profissional : Entity, IAggregateRoot
         Linkedin = linkedin;
         Recomendado = recomendado;
         Status = status;
+        _tratamentos = tratamentos ?? new HashSet<string>();
+        _convenios = convenios ?? new HashSet<string>();
+        _midias = midias ?? new List<MidiaAbstract>();
+        _especialidades = especialidades ?? new HashSet<Especialidade>();
+        _whatsapps = whatsapps ?? new HashSet<Whatsapp>();
     }
 
     public string Nome { get; }

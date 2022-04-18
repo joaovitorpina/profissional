@@ -4,7 +4,7 @@ public class Especialidade
 {
     private Especialidade()
     {
-        Profissionais = new HashSet<Profissional>();
+        Profissionais = new HashSet<ProfissionalModel>();
     }
 
     public Especialidade(string descricao, TipoProfissional tipoProfissional) : this()
@@ -16,5 +16,5 @@ public class Especialidade
     public int Id { get; set; }
     public string Descricao { get; set; }
     public TipoProfissional TipoProfissional { get; set; }
-    public ICollection<Profissional> Profissionais { get; set; }
+    public ICollection<ProfissionalModel> Profissionais { get; set; }
 }

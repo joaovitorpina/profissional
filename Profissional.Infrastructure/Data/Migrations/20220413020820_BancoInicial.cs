@@ -104,14 +104,15 @@ namespace Profissional.Infrastructure.Data.Migrations
                 {
                     profissional_id = table.Column<int>(type: "int", nullable: false),
                     descricao = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    profissional_model_id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_convenios", x => new { x.profissional_id, x.descricao });
                     table.ForeignKey(
-                        name: "fk_convenios_profissionais_profissional_id",
-                        column: x => x.profissional_id,
+                        name: "fk_convenios_profissionais_profissional_model_id",
+                        column: x => x.profissional_model_id,
                         principalTable: "profissionais",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
@@ -123,23 +124,23 @@ namespace Profissional.Infrastructure.Data.Migrations
                 columns: table => new
                 {
                     profissional_id = table.Column<int>(type: "int", nullable: false),
-                    logradouro = table.Column<string>(type: "longtext", nullable: true)
+                    logradouro = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    numero = table.Column<string>(type: "longtext", nullable: true)
+                    numero = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    cep = table.Column<long>(type: "bigint", nullable: false),
                     bairro = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     cidade = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     estado = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    cep = table.Column<long>(type: "bigint", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_enderecos", x => x.profissional_id);
+                    table.PrimaryKey("pk_enderecos", x => new { x.profissional_id, x.numero, x.cep, x.logradouro });
                     table.ForeignKey(
-                        name: "fk_enderecos_profissionais_profissional_id",
+                        name: "fk_enderecos_profissionais_profissional_model_id",
                         column: x => x.profissional_id,
                         principalTable: "profissionais",
                         principalColumn: "id",
@@ -148,7 +149,7 @@ namespace Profissional.Infrastructure.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "especialidade_profissional",
+                name: "especialidade_profissional_model",
                 columns: table => new
                 {
                     especialidades_id = table.Column<int>(type: "int", nullable: false),
@@ -156,15 +157,15 @@ namespace Profissional.Infrastructure.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_especialidade_profissional", x => new { x.especialidades_id, x.profissionais_id });
+                    table.PrimaryKey("pk_especialidade_profissional_model", x => new { x.especialidades_id, x.profissionais_id });
                     table.ForeignKey(
-                        name: "fk_especialidade_profissional_especialidades_especialidades_id",
+                        name: "fk_especialidade_profissional_model_especialidades_especialidad",
                         column: x => x.especialidades_id,
                         principalTable: "especialidades",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "fk_especialidade_profissional_profissionais_profissionais_id",
+                        name: "fk_especialidade_profissional_model_profissionais_profissionais",
                         column: x => x.profissionais_id,
                         principalTable: "profissionais",
                         principalColumn: "id",
@@ -182,6 +183,7 @@ namespace Profissional.Infrastructure.Data.Migrations
                     url = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     tipo_midia = table.Column<int>(type: "int", nullable: false),
+                    profissional_model_id = table.Column<int>(type: "int", nullable: false),
                     discriminator = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     url_thumbnail = table.Column<string>(type: "longtext", nullable: true)
@@ -191,8 +193,8 @@ namespace Profissional.Infrastructure.Data.Migrations
                 {
                     table.PrimaryKey("pk_midias", x => new { x.profissional_id, x.titulo, x.url, x.tipo_midia });
                     table.ForeignKey(
-                        name: "fk_midias_profissionais_profissional_id1",
-                        column: x => x.profissional_id,
+                        name: "fk_midias_profissionais_profissional_model_id",
+                        column: x => x.profissional_model_id,
                         principalTable: "profissionais",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
@@ -205,14 +207,15 @@ namespace Profissional.Infrastructure.Data.Migrations
                 {
                     profissional_id = table.Column<int>(type: "int", nullable: false),
                     descricao = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    profissional_model_id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_tratamentos", x => new { x.descricao, x.profissional_id });
                     table.ForeignKey(
-                        name: "fk_tratamentos_profissionais_profissional_id",
-                        column: x => x.profissional_id,
+                        name: "fk_tratamentos_profissionais_profissional_model_id",
+                        column: x => x.profissional_model_id,
                         principalTable: "profissionais",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
@@ -225,14 +228,15 @@ namespace Profissional.Infrastructure.Data.Migrations
                 {
                     profissional_id = table.Column<int>(type: "int", nullable: false),
                     numero = table.Column<long>(type: "bigint", nullable: false),
-                    principal = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                    principal = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    profissional_model_id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_whatsapps", x => new { x.profissional_id, x.principal, x.numero });
                     table.ForeignKey(
-                        name: "fk_whatsapps_profissionais_profissional_id",
-                        column: x => x.profissional_id,
+                        name: "fk_whatsapps_profissionais_profissional_model_id",
+                        column: x => x.profissional_model_id,
                         principalTable: "profissionais",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
@@ -240,8 +244,19 @@ namespace Profissional.Infrastructure.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "ix_especialidade_profissional_profissionais_id",
-                table: "especialidade_profissional",
+                name: "ix_convenios_profissional_model_id",
+                table: "convenios",
+                column: "profissional_model_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_enderecos_profissional_id",
+                table: "enderecos",
+                column: "profissional_id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "ix_especialidade_profissional_model_profissionais_id",
+                table: "especialidade_profissional_model",
                 column: "profissionais_id");
 
             migrationBuilder.CreateIndex(
@@ -250,14 +265,24 @@ namespace Profissional.Infrastructure.Data.Migrations
                 column: "tipo_profissional_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_midias_profissional_model_id",
+                table: "midias",
+                column: "profissional_model_id");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_profissionais_tipo_profissional_id",
                 table: "profissionais",
                 column: "tipo_profissional_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_tratamentos_profissional_id",
+                name: "ix_tratamentos_profissional_model_id",
                 table: "tratamentos",
-                column: "profissional_id");
+                column: "profissional_model_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_whatsapps_profissional_model_id",
+                table: "whatsapps",
+                column: "profissional_model_id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -269,7 +294,7 @@ namespace Profissional.Infrastructure.Data.Migrations
                 name: "enderecos");
 
             migrationBuilder.DropTable(
-                name: "especialidade_profissional");
+                name: "especialidade_profissional_model");
 
             migrationBuilder.DropTable(
                 name: "midias");

@@ -6,7 +6,7 @@ namespace Profissional.Infrastructure.Data;
 
 public class ProfissionalContext : DbContext
 {
-    public DbSet<Models.Profissional> Profissionais => Set<Models.Profissional>();
+    public DbSet<ProfissionalModel> Profissionais => Set<ProfissionalModel>();
     public DbSet<TipoProfissional> TiposProfissional => Set<TipoProfissional>();
     public DbSet<Especialidade> Especialidades => Set<Especialidade>();
     public DbSet<MidiaAbstract> Midias => Set<MidiaAbstract>();
@@ -20,6 +20,7 @@ public class ProfissionalContext : DbContext
         optionsBuilder
             .UseMySql("server=localhost;database=profissionais;user=root;password=root",
                 ServerVersion.Parse("8.0.28-mysql")).UseSnakeCaseNamingConvention();
+        optionsBuilder.EnableSensitiveDataLogging();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -45,6 +46,21 @@ public class ProfissionalContext : DbContext
         modelBuilder.Entity<Whatsapp>(entity =>
         {
             entity.HasKey(whatsapp => new { whatsapp.ProfissionalId, whatsapp.Principal, whatsapp.Numero });
+        });
+
+        modelBuilder.Entity<Endereco>(entity =>
+        {
+            entity.HasKey(endereco => new
+            {
+                endereco.ProfissionalId, endereco.Numero, endereco.Cep, endereco.Logradouro
+            });
+        });
+
+        modelBuilder.Entity<ProfissionalModel>(entity =>
+        {
+            entity.HasOne(p => p.Endereco)
+                .WithOne(e => e.ProfissionalModel)
+                .HasForeignKey<Endereco>(e => e.ProfissionalId);
         });
 
         base.OnModelCreating(modelBuilder);

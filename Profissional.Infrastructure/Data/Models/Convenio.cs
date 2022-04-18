@@ -6,13 +6,13 @@ public class Convenio
     {
     }
 
-    public Convenio(Profissional profissional, string descricao) : this()
+    public Convenio(ProfissionalModel profissionalModel, string descricao) : this()
     {
-        Profissional = profissional;
+        ProfissionalModel = profissionalModel;
         Descricao = descricao;
     }
 
     public int ProfissionalId { get; set; }
-    public Profissional Profissional { get; set; }
+    public ProfissionalModel ProfissionalModel { get; set; }
     public string Descricao { get; set; }
 }

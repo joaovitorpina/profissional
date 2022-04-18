@@ -8,8 +8,8 @@ public class Podcast : MidiaAbstract
     {
     }
 
-    public Podcast(Profissional profissional, string titulo, string url, TipoMidiaEnum tipoMidia) : base(profissional,
-        titulo, url, tipoMidia)
+    public Podcast(ProfissionalModel profissionalModel, string titulo, string url) : base(profissionalModel,
+        titulo, url, TipoMidiaEnum.Podcast)
     {
     }
 }

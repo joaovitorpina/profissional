@@ -8,7 +8,8 @@ public class Video : MidiaAbstract
     {
     }
 
-    public Video(Profissional profissional, string titulo, string url, string urlThumbnail) : base(profissional, titulo,
+    public Video(ProfissionalModel profissionalModel, string titulo, string url, string urlThumbnail) : base(
+        profissionalModel, titulo,
         url, TipoMidiaEnum.Video)
     {
         UrlThumbnail = urlThumbnail;

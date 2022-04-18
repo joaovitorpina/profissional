@@ -2,9 +2,9 @@ using Profissional.Infrastructure.Data.Models.Midias;
 
 namespace Profissional.Infrastructure.Data.Models;
 
-public class Profissional
+public class ProfissionalModel
 {
-    private Profissional()
+    private ProfissionalModel()
     {
         Especialidades = new HashSet<Especialidade>();
         Midias = new HashSet<MidiaAbstract>();
@@ -13,7 +13,7 @@ public class Profissional
         Whatsapps = new HashSet<Whatsapp>();
     }
 
-    public Profissional(string nome, string urlAmigavel, string sobre, Endereco endereco,
+    public ProfissionalModel(string nome, string urlAmigavel, string sobre, Endereco endereco,
         TipoProfissional tipoProfissional, int unidadeId, string imagemUrlPerfil, bool recomendado = false,
         bool status = true) : this()
     {

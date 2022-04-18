@@ -3,6 +3,7 @@ using MediatR;
 using Profissionais.App.Ports;
 using Profissionais.App.QueryHandlers;
 using Profissional.Infrastructure.Adapters.Queries;
+using Profissional.Infrastructure.Adapters.Repositories;
 using Profissional.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,9 @@ builder.Services.AddScoped<IBuscarProfissionaisQueryService, BuscarProfissionais
 builder.Services
     .AddScoped<IBuscarProfissionalPorUrlAmigavelQueryService, BuscarProfissionalPorUrlAmigavelQueryService>();
 builder.Services.AddScoped<IBuscarProfissionalPorIdQueryService, BuscarProfissionalPorIdQueryService>();
+builder.Services.AddScoped<IProfissionalRepository, ProfissionalRepository>();
+builder.Services.AddScoped<ITipoProfissionalRepository, TipoProfissionalRepository>();
+builder.Services.AddScoped<IBuscarTiposProfissionalQueryService, BuscarTiposProfissionalQueryService>();
 builder.Services.AddMediatR(typeof(BuscarProfissionalPorIdQueryHandler).GetTypeInfo().Assembly);
 
 var app = builder.Build();

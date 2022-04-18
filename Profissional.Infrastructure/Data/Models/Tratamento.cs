@@ -6,14 +6,14 @@ public class Tratamento
     {
     }
 
-    public Tratamento(Profissional profissional, string descricao)
+    public Tratamento(ProfissionalModel profissionalModel, string descricao)
     {
-        Profissional = profissional;
+        ProfissionalModel = profissionalModel;
         Descricao = descricao;
     }
 
 
     public int ProfissionalId { get; set; }
-    public Profissional Profissional { get; set; }
+    public ProfissionalModel ProfissionalModel { get; set; }
     public string Descricao { get; set; }
 }

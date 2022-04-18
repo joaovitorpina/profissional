@@ -9,9 +9,9 @@ public abstract class MidiaAbstract
     {
     }
 
-    public MidiaAbstract(Profissional profissional, string titulo, string url, TipoMidiaEnum tipoMidia)
+    public MidiaAbstract(ProfissionalModel profissionalModel, string titulo, string url, TipoMidiaEnum tipoMidia)
     {
-        Profissional = profissional;
+        ProfissionalModel = profissionalModel;
         Titulo = titulo;
         Url = url;
         TipoMidia = tipoMidia;
@@ -19,7 +19,7 @@ public abstract class MidiaAbstract
 
     [Key] public int ProfissionalId { get; set; }
 
-    public Profissional Profissional { get; set; }
+    public ProfissionalModel ProfissionalModel { get; set; }
     public string Titulo { get; set; }
     public string Url { get; set; }
     public TipoMidiaEnum TipoMidia { get; set; }
