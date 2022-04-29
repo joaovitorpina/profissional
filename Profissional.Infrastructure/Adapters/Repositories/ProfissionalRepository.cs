@@ -20,7 +20,7 @@ public class ProfissionalRepository : IProfissionalRepository
     {
         var model = ProfissionalMapper.ToModel(profissional);
 
-        ProfissionalContext.Profissionais.Add(model);
+        // ProfissionalContext.Profissionais.Add(model);
 
         await ProfissionalContext.SaveChangesAsync();
 
@@ -32,7 +32,7 @@ public class ProfissionalRepository : IProfissionalRepository
     {
         var model = ProfissionalMapper.ToModel(profissional);
 
-        ProfissionalContext.Profissionais.Update(model);
+        // ProfissionalContext.Profissionais.Update(model);
 
         await ProfissionalContext.SaveChangesAsync();
 
@@ -43,7 +43,7 @@ public class ProfissionalRepository : IProfissionalRepository
     {
         var model = ProfissionalMapper.ToModel(profissional);
 
-        ProfissionalContext.Profissionais.Remove(model);
+        // ProfissionalContext.Profissionais.Remove(model);
         await ProfissionalContext.SaveChangesAsync();
     }
 
@@ -52,7 +52,8 @@ public class ProfissionalRepository : IProfissionalRepository
         var profissional =
             await ProfissionalContext.Profissionais.FirstOrDefaultAsync(profissional => profissional.Id == id);
 
-        return profissional is null ? null : ProfissionalMapper.ToDomain(profissional);
+        // return profissional is null ? null : ProfissionalMapper.ToDomain(profissional);
+        return null;
     }
 
     public async Task<TipoProfissional?> BuscarTipoProfissional(int id)
@@ -61,7 +62,8 @@ public class ProfissionalRepository : IProfissionalRepository
             await ProfissionalContext.TiposProfissional.FirstOrDefaultAsync(tipoProfissional =>
                 tipoProfissional.Id == id);
 
-        return tipoProfissional is null ? null : TipoProfissionalMapper.ToDomain(tipoProfissional);
+        // return tipoProfissional is null ? null : TipoProfissionalMapper.ToDomain(tipoProfissional);
+        return null;
     }
 
     public async Task<Especialidade?> BuscarEspecialidade(int id)
@@ -69,6 +71,7 @@ public class ProfissionalRepository : IProfissionalRepository
         var especialidade =
             await ProfissionalContext.Especialidades.FirstOrDefaultAsync(especialidade => especialidade.Id == id);
 
-        return especialidade is null ? null : EspecialidadeMapper.ToDomain(especialidade);
+        // return especialidade is null ? null : EspecialidadeMapper.ToDomain(especialidade);
+        return null;
     }
 }

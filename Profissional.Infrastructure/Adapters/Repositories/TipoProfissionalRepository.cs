@@ -20,7 +20,8 @@ public class TipoProfissionalRepository : ITipoProfissionalRepository
         var tipoProfissional = await ProfissionalContext.TiposProfissional.Include(tp => tp.Especialidades)
             .FirstOrDefaultAsync(tp => tp.Id == id);
 
-        return tipoProfissional is null ? null : TipoProfissionalMapper.ToDomain(tipoProfissional);
+        // return tipoProfissional is null ? null : TipoProfissionalMapper.ToDomain(tipoProfissional);
+        return null;
     }
 
     public async Task<TipoProfissional> Salvar(TipoProfissional tipoProfissional)
@@ -36,9 +37,10 @@ public class TipoProfissionalRepository : ITipoProfissionalRepository
 
     public async Task<Especialidade?> BuscarEspecialidadePorDescricao(string descricao, int tipoEspecialidadeId)
     {
-        var especialidade = await ProfissionalContext.Especialidades.FirstOrDefaultAsync(e =>
-            e.Descricao == descricao && e.TipoProfissional.Id == tipoEspecialidadeId);
+        // var especialidade = await ProfissionalContext.Especialidades.FirstOrDefaultAsync(e =>
+        // e.Descricao == descricao && e.TipoProfissional.Id == tipoEspecialidadeId);
 
-        return especialidade is null ? null : EspecialidadeMapper.ToDomain(especialidade);
+        // return especialidade is null ? null : EspecialidadeMapper.ToDomain(especialidade);
+        return null;
     }
 }
