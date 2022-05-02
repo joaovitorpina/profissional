@@ -4,7 +4,7 @@ namespace Profissional.Domain.Aggregates.TipoProfissional;
 
 public class Especialidade : Entity
 {
-    public Especialidade(string descricao, int? id = null) : base(id)
+    public Especialidade(string descricao, int id = default) : base(id)
     {
         Descricao = descricao;
     }

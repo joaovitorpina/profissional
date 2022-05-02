@@ -15,6 +15,38 @@ public class ProfissionalEntityTypeConfiguration : IEntityTypeConfiguration<Doma
 
         builder.Property(e => e.Nome);
 
+        builder.Property(e => e.UrlAmigavel);
+
+        builder.Property(e => e.Sobre);
+
+        builder.Property(e => e.UnidadeId);
+
+        builder.Property(e => e.ImagemUrlPerfil);
+
+        builder.Property(e => e.Conselho);
+
+        builder.Property(e => e.NumeroIdentificacao);
+
+        builder.Property(e => e.Telefone);
+
+        builder.Property(e => e.Celular);
+
+        builder.Property(e => e.Email);
+
+        builder.Property(e => e.Site);
+
+        builder.Property(e => e.Facebook);
+
+        builder.Property(e => e.Instagram);
+
+        builder.Property(e => e.Youtube);
+
+        builder.Property(e => e.Linkedin);
+
+        builder.Property(e => e.Recomendado);
+
+        builder.Property(e => e.Status);
+
         builder.HasOne(e => e.TipoProfissional)
             .WithMany()
             .HasForeignKey("tipo_profissional_id");

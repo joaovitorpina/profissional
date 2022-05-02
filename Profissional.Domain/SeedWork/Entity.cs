@@ -7,9 +7,9 @@ public abstract class Entity
 {
     private int? _requestedHashCode;
 
-    protected Entity(int? id)
+    protected Entity(int id)
     {
-        Id = id ?? default;
+        Id = id;
     }
 
     public virtual int Id { get; protected set; }

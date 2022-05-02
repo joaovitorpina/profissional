@@ -14,21 +14,17 @@ public class Profissional : Entity, IAggregateRoot
     private readonly HashSet<string> _tratamentos;
     private readonly HashSet<Whatsapp> _whatsapps;
 
-    public Profissional(string nome, string urlAmigavel, string sobre, Endereco endereco,
-        TipoProfissional.TipoProfissional tipoProfissional, int unidadeId, string imagemUrlPerfil,
+    public Profissional(string nome, string urlAmigavel, string sobre, int unidadeId, string imagemUrlPerfil,
         string? conselho = null,
         string? numeroIdentificacao = null, long? telefone = default, long? celular = default, string? email = null,
         string? site = null, string? facebook = null, string? instagram = null, string? youtube = null,
-        string? linkedin = null, bool recomendado = false, bool status = true, int? id = null,
-        HashSet<string>? tratamentos = null,
-        HashSet<string>? convenios = null, List<MidiaAbstract>? midias = null,
-        HashSet<Especialidade>? especialidades = null, HashSet<Whatsapp>? whatsapps = null) : base(id)
+        string? linkedin = null, bool recomendado = false, bool status = true, int id = default) : base(id)
     {
         Nome = nome;
         UrlAmigavel = urlAmigavel;
         Sobre = sobre;
-        Endereco = endereco;
-        TipoProfissional = tipoProfissional;
+        // Endereco = endereco;
+        // TipoProfissional = tipoProfissional;
         UnidadeId = unidadeId;
         ImagemUrlPerfil = imagemUrlPerfil;
         Conselho = conselho;
@@ -43,11 +39,11 @@ public class Profissional : Entity, IAggregateRoot
         Linkedin = linkedin;
         Recomendado = recomendado;
         Status = status;
-        _tratamentos = tratamentos ?? new HashSet<string>();
-        _convenios = convenios ?? new HashSet<string>();
-        _midias = midias ?? new List<MidiaAbstract>();
-        _especialidades = especialidades ?? new HashSet<Especialidade>();
-        _whatsapps = whatsapps ?? new HashSet<Whatsapp>();
+        // _tratamentos = tratamentos ?? new HashSet<string>();
+        // _convenios = convenios ?? new HashSet<string>();
+        // _midias = midias ?? new List<MidiaAbstract>();
+        // _especialidades = especialidades ?? new HashSet<Especialidade>();
+        // _whatsapps = whatsapps ?? new HashSet<Whatsapp>();
     }
 
     public string Nome { get; }

@@ -24,7 +24,9 @@ public class ProfissionalRepository : IProfissionalRepository
 
         await ProfissionalContext.SaveChangesAsync();
 
-        return ProfissionalMapper.ToDomain(model);
+        // return ProfissionalMapper.ToDomain(model);
+
+        return null;
     }
 
     public async Task<Domain.Aggregates.Profissional.Profissional> Alterar(
@@ -36,7 +38,8 @@ public class ProfissionalRepository : IProfissionalRepository
 
         await ProfissionalContext.SaveChangesAsync();
 
-        return ProfissionalMapper.ToDomain(model);
+        // return ProfissionalMapper.ToDomain(model);
+        return null;
     }
 
     public async Task Remover(Domain.Aggregates.Profissional.Profissional profissional)
@@ -59,8 +62,9 @@ public class ProfissionalRepository : IProfissionalRepository
     public async Task<TipoProfissional?> BuscarTipoProfissional(int id)
     {
         var tipoProfissional =
-            await ProfissionalContext.TiposProfissional.FirstOrDefaultAsync(tipoProfissional =>
-                tipoProfissional.Id == id);
+            await ProfissionalContext.TiposProfissional.Include(tp => tp.Especialidades).FirstOrDefaultAsync(
+                tipoProfissional =>
+                    tipoProfissional.Id == id);
 
         // return tipoProfissional is null ? null : TipoProfissionalMapper.ToDomain(tipoProfissional);
         return null;

@@ -1,18 +1,18 @@
-using Profissional.Domain.Aggregates.TipoProfissional;
+using Profissional.Infrastructure.Data.Models;
 
 namespace Profissional.Infrastructure.Data.Mappers;
 
 public static class TipoProfissionalMapper
 {
-    public static TipoProfissional ToDomain(Models.TipoProfissional model)
-    {
-        return new TipoProfissional(model.Descricao,
-            model.Especialidades.Select(EspecialidadeMapper.ToDomain).ToHashSet(), model.Id);
-    }
+    // public static TipoProfissional ToDomain(Models.TipoProfissional model)
+    // {
+    //     return new TipoProfissional(model.Descricao,
+    //         model.Especialidades.Select(EspecialidadeMapper.ToDomain).ToHashSet(), model.Id);
+    // }
 
-    public static Models.TipoProfissional ToModel(TipoProfissional domain)
+    public static TipoProfissional ToModel(Domain.Aggregates.TipoProfissional.TipoProfissional domain)
     {
-        var model = new Models.TipoProfissional(domain.Descricao)
+        var model = new TipoProfissional(domain.Descricao)
         {
             Id = domain.Id
         };

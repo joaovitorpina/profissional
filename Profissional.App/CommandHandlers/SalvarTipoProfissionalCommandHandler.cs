@@ -72,6 +72,7 @@ public class
     {
         var especialidades = await MontarEspecialidades(request.Especialidades, 0);
 
-        return new TipoProfissional(request.Descricao, especialidades.ToHashSet());
+        // return new TipoProfissional(request.Descricao, especialidades.ToHashSet());
+        return null;
     }
 }

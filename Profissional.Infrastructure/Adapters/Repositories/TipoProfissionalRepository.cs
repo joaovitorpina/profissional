@@ -32,7 +32,8 @@ public class TipoProfissionalRepository : ITipoProfissionalRepository
         ProfissionalContext.Update(model);
         await ProfissionalContext.SaveChangesAsync();
 
-        return TipoProfissionalMapper.ToDomain(model);
+        // return TipoProfissionalMapper.ToDomain(model);
+        return null;
     }
 
     public async Task<Especialidade?> BuscarEspecialidadePorDescricao(string descricao, int tipoEspecialidadeId)
