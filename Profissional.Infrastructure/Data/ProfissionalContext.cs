@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Profissional.Domain.Aggregates.Midias;
-using Profissional.Domain.Aggregates.Profissional;
 using Profissional.Domain.Aggregates.TipoProfissional;
 using Profissional.Infrastructure.Data.EntityConfigurations;
 
@@ -14,8 +13,7 @@ public class ProfissionalContext : DbContext
     public DbSet<TipoProfissional> TiposProfissional => Set<TipoProfissional>();
     public DbSet<Especialidade> Especialidades => Set<Especialidade>();
     public DbSet<MidiaAbstract> Midias => Set<MidiaAbstract>();
-    public DbSet<Endereco> Enderecos => Set<Endereco>();
-    public DbSet<Whatsapp> Whatsapps => Set<Whatsapp>();
+    public DbSet<TipoMidia> TiposMidia => Set<TipoMidia>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -31,12 +29,14 @@ public class ProfissionalContext : DbContext
         // modelBuilder.Entity<Podcast>();
         // modelBuilder.Entity<Video>();
 
-        modelBuilder.ApplyConfiguration(new EnderecoEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new EspecialidadeEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new MidiaAbstractEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new TipoMidiaEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new ImagemEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new PodcastEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new VideoEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new ProfissionalEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new TipoProfissionalEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new WhatsappEntityTypeConfiguration());
 
         base.OnModelCreating(modelBuilder);
     }

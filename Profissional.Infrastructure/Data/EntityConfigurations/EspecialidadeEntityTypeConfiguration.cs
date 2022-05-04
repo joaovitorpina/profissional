@@ -12,6 +12,8 @@ public class EspecialidadeEntityTypeConfiguration : IEntityTypeConfiguration<Esp
 
         builder.HasKey(e => e.Id);
 
+        builder.Ignore(e => e.DomainEvents);
+
         builder.Property(e => e.Descricao).IsRequired();
     }
 }

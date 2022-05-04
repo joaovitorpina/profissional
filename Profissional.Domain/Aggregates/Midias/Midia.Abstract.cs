@@ -4,6 +4,8 @@ namespace Profissional.Domain.Aggregates.Midias;
 
 public abstract class MidiaAbstract : ValueObject
 {
+    private int _tipoMidiaId;
+
     public MidiaAbstract(string titulo, string url, TipoMidia tipoMidia)
     {
         Titulo = titulo;

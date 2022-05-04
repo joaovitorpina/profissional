@@ -1,6 +1,7 @@
 using MediatR;
 using Profissionais.App.Commands;
 using Profissionais.App.Ports;
+using Profissional.Domain.Aggregates.Profissional;
 using Profissional.Domain.Exceptions;
 
 namespace Profissionais.App.CommandHandlers;
@@ -20,9 +21,9 @@ public class RemoverConvenioCommandHandler : IRequestHandler<RemoverConvenioComm
 
         if (profissional is null) throw new ProfissionalNaoEncontradoException();
 
-        profissional.RemoverConvenio(request.Descricao);
+        profissional.RemoverConvenio(new Convenio(request.Descricao));
         profissional = await ProfissionalRepository.Alterar(profissional);
 
-        return profissional.Convenios.ToList();
+        return profissional.Convenios.Select(c => c.Descricao).ToList();
     }
 }

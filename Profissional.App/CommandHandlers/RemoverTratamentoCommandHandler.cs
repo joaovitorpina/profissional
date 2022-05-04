@@ -1,6 +1,7 @@
 using MediatR;
 using Profissionais.App.Commands;
 using Profissionais.App.Ports;
+using Profissional.Domain.Aggregates.Profissional;
 using Profissional.Domain.Exceptions;
 
 namespace Profissionais.App.CommandHandlers;
@@ -20,9 +21,9 @@ public class RemoverTratamentoCommandHandler : IRequestHandler<RemoverTratamento
 
         if (profissional is null) throw new ProfissionalNaoEncontradoException();
 
-        profissional.RemoverTratamento(request.Descricao);
+        profissional.RemoverTratamento(new Tratamento(request.Descricao));
         profissional = await ProfissionalRepository.Alterar(profissional);
 
-        return profissional.Tratamentos.ToList();
+        return profissional.Tratamentos.Select(t => t.Descricao).ToList();
     }
 }

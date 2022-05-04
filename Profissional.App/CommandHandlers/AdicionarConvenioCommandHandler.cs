@@ -1,6 +1,7 @@
 using MediatR;
 using Profissionais.App.Commands;
 using Profissionais.App.Ports;
+using Profissional.Domain.Aggregates.Profissional;
 using Profissional.Domain.Exceptions;
 
 namespace Profissionais.App.CommandHandlers;
@@ -20,9 +21,9 @@ public class AdicionarConvenioCommandHandler : IRequestHandler<AdicionarConvenio
 
         if (profissional is null) throw new ProfissionalNaoEncontradoException();
 
-        profissional.AdicionarConvenio(request.Descricao);
+        profissional.AdicionarConvenio(new Convenio(request.Descricao));
         profissional = await ProfissionalRepository.Alterar(profissional);
 
-        return profissional.Tratamentos.ToList();
+        return profissional.Tratamentos.Select(e => e.Descricao).ToList();
     }
 }

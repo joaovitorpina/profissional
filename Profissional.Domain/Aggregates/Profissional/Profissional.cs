@@ -8,23 +8,30 @@ namespace Profissional.Domain.Aggregates.Profissional;
 
 public class Profissional : Entity, IAggregateRoot
 {
-    private readonly HashSet<string> _convenios;
+    private readonly HashSet<Convenio> _convenios;
     private readonly HashSet<Especialidade> _especialidades;
     private readonly List<MidiaAbstract> _midias;
-    private readonly HashSet<string> _tratamentos;
+    private readonly HashSet<Tratamento> _tratamentos;
     private readonly HashSet<Whatsapp> _whatsapps;
+
+    protected Profissional()
+    {
+        _convenios = new HashSet<Convenio>();
+        _especialidades = new HashSet<Especialidade>();
+        _midias = new List<MidiaAbstract>();
+        _tratamentos = new HashSet<Tratamento>();
+        _whatsapps = new HashSet<Whatsapp>();
+    }
 
     public Profissional(string nome, string urlAmigavel, string sobre, int unidadeId, string imagemUrlPerfil,
         string? conselho = null,
         string? numeroIdentificacao = null, long? telefone = default, long? celular = default, string? email = null,
         string? site = null, string? facebook = null, string? instagram = null, string? youtube = null,
-        string? linkedin = null, bool recomendado = false, bool status = true, int id = default) : base(id)
+        string? linkedin = null, bool recomendado = false, bool status = true, int id = default) : this()
     {
         Nome = nome;
         UrlAmigavel = urlAmigavel;
         Sobre = sobre;
-        // Endereco = endereco;
-        // TipoProfissional = tipoProfissional;
         UnidadeId = unidadeId;
         ImagemUrlPerfil = imagemUrlPerfil;
         Conselho = conselho;
@@ -39,55 +46,146 @@ public class Profissional : Entity, IAggregateRoot
         Linkedin = linkedin;
         Recomendado = recomendado;
         Status = status;
-        // _tratamentos = tratamentos ?? new HashSet<string>();
-        // _convenios = convenios ?? new HashSet<string>();
-        // _midias = midias ?? new List<MidiaAbstract>();
-        // _especialidades = especialidades ?? new HashSet<Especialidade>();
-        // _whatsapps = whatsapps ?? new HashSet<Whatsapp>();
     }
 
-    public string Nome { get; }
-    public string UrlAmigavel { get; }
-    public string Sobre { get; }
-    public Endereco Endereco { get; }
-    public TipoProfissional.TipoProfissional TipoProfissional { get; }
-    public int UnidadeId { get; }
-    public string ImagemUrlPerfil { get; }
-    public string? Conselho { get; }
-    public string? NumeroIdentificacao { get; }
-    public long? Telefone { get; }
-    public long? Celular { get; }
-    public string? Email { get; }
-    public string? Site { get; }
-    public string? Facebook { get; }
-    public string? Instagram { get; }
-    public string? Youtube { get; }
-    public string? Linkedin { get; }
-    public bool Recomendado { get; }
-    public bool Status { get; }
+    public string Nome { get; private set; }
+    public string UrlAmigavel { get; private set; }
+    public string Sobre { get; private set; }
+    public Endereco Endereco { get; private set; }
+    public TipoProfissional.TipoProfissional TipoProfissional { get; private set; }
+    public int UnidadeId { get; private set; }
+    public string ImagemUrlPerfil { get; private set; }
+    public string? Conselho { get; private set; }
+    public string? NumeroIdentificacao { get; private set; }
+    public long? Telefone { get; private set; }
+    public long? Celular { get; private set; }
+    public string? Email { get; private set; }
+    public string? Site { get; private set; }
+    public string? Facebook { get; private set; }
+    public string? Instagram { get; private set; }
+    public string? Youtube { get; private set; }
+    public string? Linkedin { get; private set; }
+    public bool Recomendado { get; private set; }
+    public bool Status { get; private set; }
 
-    public IReadOnlySet<string> Tratamentos => _tratamentos;
-    public IReadOnlySet<string> Convenios => _convenios;
+    public IReadOnlySet<Tratamento> Tratamentos => _tratamentos;
+    public IReadOnlySet<Convenio> Convenios => _convenios;
     public IReadOnlyList<MidiaAbstract> Midias => _midias;
     public IReadOnlySet<Especialidade> Especialidades => _especialidades;
     public IReadOnlySet<Whatsapp> Whatsapps => _whatsapps;
 
-    public void AdicionarTratamento(string tratamento)
+    public void MudarEndereco(Endereco endereco)
+    {
+        Endereco = endereco;
+    }
+
+    public void MudarTipoProfissional(TipoProfissional.TipoProfissional tipoProfissional)
+    {
+        TipoProfissional = tipoProfissional;
+        _especialidades.Clear();
+    }
+
+    public void MudarNome(string nome)
+    {
+        Nome = nome;
+    }
+
+    public void MudarUrlAmigavel(string urlAmigavel)
+    {
+        UrlAmigavel = urlAmigavel;
+    }
+
+    public void MudarSobre(string sobre)
+    {
+        Sobre = sobre;
+    }
+
+    public void MudarUnidadeId(int unidadeId)
+    {
+        UnidadeId = unidadeId;
+    }
+
+    public void MudarImagemUrlPerfil(string imagemUrlPerfil)
+    {
+        ImagemUrlPerfil = imagemUrlPerfil;
+    }
+
+    public void MudarConselho(string? conselho)
+    {
+        Conselho = conselho;
+    }
+
+    public void MudarNumeroIdentificacao(string? numeroIdentificacao)
+    {
+        NumeroIdentificacao = numeroIdentificacao;
+    }
+
+    public void MudarTelefone(long? telefone)
+    {
+        Telefone = telefone;
+    }
+
+    public void MudarCelular(long? celular)
+    {
+        Celular = celular;
+    }
+
+    public void MudarEmail(string? email)
+    {
+        Email = email;
+    }
+
+    public void MudarSite(string? site)
+    {
+        Site = site;
+    }
+
+    public void MudarFacebook(string? facebook)
+    {
+        Facebook = facebook;
+    }
+
+    public void MudarInstagram(string? instagram)
+    {
+        Instagram = instagram;
+    }
+
+    public void MudarYoutube(string? youtube)
+    {
+        Youtube = youtube;
+    }
+
+    public void MudarLinkedin(string? linkedin)
+    {
+        Linkedin = linkedin;
+    }
+
+    public void MudarRecomendado(bool recomendado)
+    {
+        Recomendado = recomendado;
+    }
+
+    public void MudarStatus(bool status)
+    {
+        Status = status;
+    }
+
+    public void AdicionarTratamento(Tratamento tratamento)
     {
         _tratamentos.Add(tratamento);
     }
 
-    public void RemoverTratamento(string tratamento)
+    public void RemoverTratamento(Tratamento tratamento)
     {
         _tratamentos.Remove(tratamento);
     }
 
-    public void AdicionarConvenio(string convenio)
+    public void AdicionarConvenio(Convenio convenio)
     {
         _convenios.Add(convenio);
     }
 
-    public void RemoverConvenio(string convenio)
+    public void RemoverConvenio(Convenio convenio)
     {
         _convenios.Remove(convenio);
     }

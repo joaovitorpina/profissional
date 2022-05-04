@@ -7,11 +7,6 @@ public abstract class Entity
 {
     private int? _requestedHashCode;
 
-    protected Entity(int id)
-    {
-        Id = id;
-    }
-
     public virtual int Id { get; protected set; }
 
     public List<INotification>? DomainEvents { get; private set; }

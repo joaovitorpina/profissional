@@ -47,23 +47,52 @@ public class ProfissionalEntityTypeConfiguration : IEntityTypeConfiguration<Doma
 
         builder.Property(e => e.Status);
 
+        builder.Ignore(e => e.Midias);
+
         builder.HasOne(e => e.TipoProfissional)
             .WithMany()
             .HasForeignKey("tipo_profissional_id");
 
-        builder.HasOne(e => e.Endereco)
-            .WithOne();
+        builder.OwnsOne(e => e.Endereco, b =>
+        {
+            b.Property(e => e.Bairro);
 
-        builder.HasMany(e => e.Tratamentos)
-            .WithOne();
+            b.Property(e => e.Logradouro);
 
-        builder.HasMany(e => e.Convenios)
-            .WithOne();
+            b.Property(e => e.Numero);
+
+            b.Property(e => e.Cidade).IsRequired();
+
+            b.Property(e => e.Estado).IsRequired();
+
+            b.Property(e => e.Cep);
+        });
+
+        builder.OwnsMany(e => e.Tratamentos, b =>
+        {
+            b.ToTable("tratamentos");
+
+            b.Property(e => e.Descricao).IsRequired();
+        });
+
+        builder.OwnsMany(e => e.Convenios, b =>
+        {
+            b.ToTable("convenios");
+
+            b.Property(e => e.Descricao).IsRequired();
+        });
 
         builder.HasMany(e => e.Especialidades)
+            .WithMany(e => e.Profissionais);
+
+        builder.HasMany(e => e.Midias)
             .WithOne();
 
-        builder.HasMany(e => e.Whatsapps)
-            .WithOne();
+        builder.OwnsMany(e => e.Whatsapps, b =>
+        {
+            b.Property(e => e.Numero).IsRequired();
+
+            b.Property(e => e.Principal).IsRequired();
+        });
     }
 }

@@ -7,10 +7,14 @@ public class TipoProfissional : Entity, IAggregateRoot
 {
     private readonly HashSet<Especialidade> _especialidades;
 
-    public TipoProfissional(string descricao, int id = default) : base(id)
+    private TipoProfissional()
+    {
+        _especialidades = new HashSet<Especialidade>();
+    }
+
+    public TipoProfissional(string descricao) : this()
     {
         Descricao = descricao;
-        // _especialidades = especialidades ?? new HashSet<Especialidade>();
     }
 
     public string Descricao { get; set; }

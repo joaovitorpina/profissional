@@ -23,7 +23,7 @@ public class
     {
         var tipoProfissional = request.Id is not null
             ? await AtualizarTipoProfissional(request)
-            : await CriarTipoProfissional(request);
+            : CriarTipoProfissional(request);
 
         tipoProfissional = await TipoProfissionalRepository.Salvar(tipoProfissional);
 
@@ -40,39 +40,30 @@ public class
 
         tipoProfissional.Descricao = request.Descricao;
 
-        var especialidades = await MontarEspecialidades(request.Especialidades, tipoProfissional.Id);
+        //TODO Rever essa parte de exclusao de especialidades nao mais presentes
+        // foreach (var tipoProfissionalEspecialidade in tipoProfissional.Especialidades)
+        //     if (!especialidades.Contains(tipoProfissionalEspecialidade))
+        //         tipoProfissional.RemoverEspecialidade(tipoProfissionalEspecialidade);
 
-        foreach (var tipoProfissionalEspecialidade in tipoProfissional.Especialidades)
-            if (!especialidades.Contains(tipoProfissionalEspecialidade))
-                tipoProfissional.RemoverEspecialidade(tipoProfissionalEspecialidade);
-
-        foreach (var especialidade in especialidades.Where(especialidade =>
-                     !tipoProfissional.Especialidades.Contains(especialidade)))
-            tipoProfissional.AdicionarEspecialidade(especialidade);
+        foreach (var especialidade in request.Especialidades)
+            tipoProfissional.AdicionarEspecialidade(new Especialidade(especialidade));
 
         return tipoProfissional;
     }
 
-    private async Task<List<Especialidade>> MontarEspecialidades(List<string> especialidades, int tipoProfissionalId)
+    private void AdicionarEspecialidades(TipoProfissional tipoProfissional, List<string> especialidades)
     {
-        var especialidadesDomain = new List<Especialidade>();
-
         foreach (var especialidade in especialidades)
         {
-            var especialidadeDomain =
-                await TipoProfissionalRepository.BuscarEspecialidadePorDescricao(especialidade, tipoProfissionalId);
-
-            especialidadesDomain.Add(especialidadeDomain ?? new Especialidade(especialidade));
+            tipoProfissional.AdicionarEspecialidade(new Especialidade(especialidade));
         }
-
-        return especialidadesDomain;
     }
 
-    private async Task<TipoProfissional> CriarTipoProfissional(SalvarTipoProfissionalCommand request)
+    private TipoProfissional CriarTipoProfissional(SalvarTipoProfissionalCommand request)
     {
-        var especialidades = await MontarEspecialidades(request.Especialidades, 0);
+        var tipoProfissional = new TipoProfissional(request.Descricao);
+        AdicionarEspecialidades(tipoProfissional, request.Especialidades);
 
-        // return new TipoProfissional(request.Descricao, especialidades.ToHashSet());
-        return null;
+        return tipoProfissional;
     }
 }

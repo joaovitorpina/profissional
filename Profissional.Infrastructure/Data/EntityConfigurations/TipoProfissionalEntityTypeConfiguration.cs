@@ -18,7 +18,7 @@ public class TipoProfissionalEntityTypeConfiguration : IEntityTypeConfiguration<
 
         builder.HasMany(e => e.Especialidades)
             .WithOne()
-            .HasForeignKey("tipo_profissional_id")
+            .HasForeignKey("tipoProfissionalId")
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

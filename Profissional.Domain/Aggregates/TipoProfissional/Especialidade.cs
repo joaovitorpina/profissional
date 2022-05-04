@@ -4,14 +4,20 @@ namespace Profissional.Domain.Aggregates.TipoProfissional;
 
 public class Especialidade : Entity
 {
-    public Especialidade(string descricao, int id = default) : base(id)
+    private readonly List<Profissional.Profissional> _profissionais;
+    public readonly int tipoProfissionalId;
+
+    private Especialidade()
+    {
+        _profissionais = new List<Profissional.Profissional>();
+    }
+
+    public Especialidade(string descricao) : this()
     {
         Descricao = descricao;
     }
 
     public string Descricao { get; }
 
-    public void InserirId(int id)
-    {
-    }
+    public IReadOnlyList<Profissional.Profissional> Profissionais => _profissionais;
 }

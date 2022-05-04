@@ -10,10 +10,12 @@ public class MidiaAbstractEntityTypeConfiguration : IEntityTypeConfiguration<Mid
     {
         builder.ToTable("midias");
 
-        builder.HasKey(e => new { e.Titulo, e.Url, e.TipoMidia });
+        builder.HasKey(e => new { e.Titulo, e.Url });
 
         builder.Property(e => e.Titulo).IsRequired();
         builder.Property(e => e.Url).IsRequired();
-        builder.Property(e => e.TipoMidia).IsRequired();
+        builder.HasOne(e => e.TipoMidia)
+            .WithMany()
+            .HasForeignKey("_tipoMidiaId");
     }
 }

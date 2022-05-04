@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Profissionais.App.Ports;
 using Profissional.Domain.Aggregates.TipoProfissional;
 using Profissional.Infrastructure.Data;
-using Profissional.Infrastructure.Data.Mappers;
 
 namespace Profissional.Infrastructure.Adapters.Repositories;
 
@@ -18,33 +17,24 @@ public class ProfissionalRepository : IProfissionalRepository
     public async Task<Domain.Aggregates.Profissional.Profissional> Criar(
         Domain.Aggregates.Profissional.Profissional profissional)
     {
-        var model = ProfissionalMapper.ToModel(profissional);
-
-        // ProfissionalContext.Profissionais.Add(model);
-
+        ProfissionalContext.Profissionais.Add(profissional);
         await ProfissionalContext.SaveChangesAsync();
 
-        // return ProfissionalMapper.ToDomain(model);
-
-        return null;
+        return profissional;
     }
 
     public async Task<Domain.Aggregates.Profissional.Profissional> Alterar(
         Domain.Aggregates.Profissional.Profissional profissional)
     {
-        var model = ProfissionalMapper.ToModel(profissional);
-
-        // ProfissionalContext.Profissionais.Update(model);
-
+        ProfissionalContext.Profissionais.Update(profissional);
         await ProfissionalContext.SaveChangesAsync();
 
-        // return ProfissionalMapper.ToDomain(model);
-        return null;
+        return profissional;
     }
 
     public async Task Remover(Domain.Aggregates.Profissional.Profissional profissional)
     {
-        var model = ProfissionalMapper.ToModel(profissional);
+        // var model = ProfissionalMapper.ToModel(profissional);
 
         // ProfissionalContext.Profissionais.Remove(model);
         await ProfissionalContext.SaveChangesAsync();
@@ -55,27 +45,24 @@ public class ProfissionalRepository : IProfissionalRepository
         var profissional =
             await ProfissionalContext.Profissionais.FirstOrDefaultAsync(profissional => profissional.Id == id);
 
-        // return profissional is null ? null : ProfissionalMapper.ToDomain(profissional);
-        return null;
+        return profissional;
     }
 
-    public async Task<TipoProfissional?> BuscarTipoProfissional(int id)
+    public async Task<TipoProfissional?> BuscarTipoProfissionalPorId(int id)
     {
         var tipoProfissional =
             await ProfissionalContext.TiposProfissional.Include(tp => tp.Especialidades).FirstOrDefaultAsync(
                 tipoProfissional =>
                     tipoProfissional.Id == id);
 
-        // return tipoProfissional is null ? null : TipoProfissionalMapper.ToDomain(tipoProfissional);
-        return null;
+        return tipoProfissional;
     }
 
-    public async Task<Especialidade?> BuscarEspecialidade(int id)
+    public async Task<Especialidade?> BuscarEspecialidadePorId(int id)
     {
         var especialidade =
             await ProfissionalContext.Especialidades.FirstOrDefaultAsync(especialidade => especialidade.Id == id);
 
-        // return especialidade is null ? null : EspecialidadeMapper.ToDomain(especialidade);
-        return null;
+        return especialidade;
     }
 }

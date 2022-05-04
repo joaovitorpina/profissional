@@ -1,5 +1,5 @@
 services:
-  iqs-api:
+  profissionais-service:
     container_name: profissionais-service
     build:
       context: ../

@@ -3,6 +3,8 @@ using Profissionais.App.Commands;
 using Profissionais.App.DTO;
 using Profissionais.App.Exceptions;
 using Profissionais.App.Ports;
+using Profissional.Domain.Aggregates.Profissional;
+using Profissional.Domain.Exceptions;
 
 namespace Profissionais.App.CommandHandlers;
 
@@ -19,56 +21,100 @@ public class
     public async Task<AlterarProfissionalResponse> Handle(AlterarProfissionalCommand request,
         CancellationToken cancellationToken)
     {
-        var tipoProfissional = await ProfissionalRepository.BuscarTipoProfissional(request.TipoProfissionalId);
+        var profissional = await ProfissionalRepository.BuscarPorId(request.Id);
+
+        if (profissional is null) throw new ProfissionalNaoEncontradoException();
+
+        await AlterarCampos(profissional, request);
+
+        var profissionalAlterado = await ProfissionalRepository.Alterar(profissional);
+
+        return new AlterarProfissionalResponse
+        {
+            Id = profissionalAlterado.Id,
+            Nome = profissionalAlterado.Nome,
+            UrlAmigavel = profissionalAlterado.UrlAmigavel,
+            Sobre = profissionalAlterado.Sobre,
+            Endereco = new EnderecoResponse(profissionalAlterado.Endereco.Estado, profissionalAlterado.Endereco.Cidade,
+                profissionalAlterado.Endereco.Logradouro, profissionalAlterado.Endereco.Bairro,
+                profissionalAlterado.Endereco.Cep),
+            TipoProfissionalId = profissionalAlterado.TipoProfissional.Id,
+            UnidadeId = profissionalAlterado.UnidadeId,
+            ImagemUrlPerfil = profissionalAlterado.ImagemUrlPerfil,
+            Conselho = profissionalAlterado.Conselho,
+            NumeroIdentificacao = profissionalAlterado.NumeroIdentificacao,
+            Telefone = profissionalAlterado.Telefone,
+            Celular = profissionalAlterado.Celular,
+            Email = profissionalAlterado.Email,
+            Site = profissionalAlterado.Site,
+            Facebook = profissionalAlterado.Facebook,
+            Instagram = profissionalAlterado.Instagram,
+            Youtube = profissionalAlterado.Youtube,
+            Linkedin = profissionalAlterado.Linkedin,
+            Recomendado = profissionalAlterado.Recomendado,
+            Status = profissionalAlterado.Status,
+            Especialidades = profissionalAlterado.Especialidades.Select(especialidade => especialidade.Id).ToList()
+        };
+    }
+
+
+    private async Task AlterarCampos(Profissional.Domain.Aggregates.Profissional.Profissional profissional,
+        AlterarProfissionalCommand request)
+    {
+        AlterarEndereco(profissional, request.Endereco);
+        await AlterarTipoProfissional(profissional, request.TipoProfissionalId);
+
+        profissional.MudarNome(request.Nome);
+        profissional.MudarUrlAmigavel(request.UrlAmigavel);
+        profissional.MudarSobre(request.Sobre);
+        profissional.MudarUnidadeId(request.UnidadeId);
+        profissional.MudarImagemUrlPerfil(request.ImagemUrlPerfil);
+        profissional.MudarConselho(request.Conselho);
+        profissional.MudarNumeroIdentificacao(request.NumeroIdentificacao);
+        profissional.MudarTelefone(request.Telefone);
+        profissional.MudarCelular(request.Celular);
+        profissional.MudarEmail(request.Email);
+        profissional.MudarSite(request.Site);
+        profissional.MudarFacebook(request.Facebook);
+        profissional.MudarInstagram(request.Instagram);
+        profissional.MudarYoutube(request.Youtube);
+        profissional.MudarLinkedin(request.Linkedin);
+        profissional.MudarRecomendado(request.Recomendado);
+        profissional.MudarStatus(request.Status);
+
+        await AlterarEspecialidades(profissional, request.Especialidades);
+    }
+
+    private void AlterarEndereco(Profissional.Domain.Aggregates.Profissional.Profissional profissional,
+        AlterarProfissionalEndereco endereco)
+    {
+        var enderecoDomain = new Endereco(endereco.Logradouro, endereco.Numero, endereco.Bairro, endereco.Cidade,
+            endereco.Estado, endereco.Cep);
+
+        profissional.MudarEndereco(enderecoDomain);
+    }
+
+    private async Task AlterarTipoProfissional(Profissional.Domain.Aggregates.Profissional.Profissional profissional,
+        int tipoProfissionalId)
+    {
+        var tipoProfissional = await ProfissionalRepository.BuscarTipoProfissionalPorId(tipoProfissionalId);
 
         if (tipoProfissional is null) throw new TipoProfissionalNaoEncontradoException();
 
-        // var profissional = new Profissional.Domain.Aggregates.Profissional.Profissional(request.Nome,
-        //     request.UrlAmigavel, request.Sobre,
-        //     new Endereco(request.Endereco.Logradouro, request.Endereco.Numero, request.Endereco.Bairro,
-        //         request.Endereco.Cidade, request.Endereco.Estado, request.Endereco.Cep), tipoProfissional,
-        //     request.UnidadeId, request.ImagemUrlPerfil, request.Conselho, request.NumeroIdentificacao, request.Telefone,
-        //     request.Celular, request.Email, request.Site, request.Facebook, request.Instagram, request.Youtube,
-        //     request.Linkedin, request.Recomendado, request.Status, request.Id);
+        if (!Equals(tipoProfissional, profissional.TipoProfissional))
+            profissional.MudarTipoProfissional(tipoProfissional);
+    }
 
-        foreach (var requestEspecialidade in request.Especialidades)
+    private async Task AlterarEspecialidades(Profissional.Domain.Aggregates.Profissional.Profissional profissional,
+        List<int> especialidades)
+    {
+        foreach (var especialidade in especialidades)
         {
-            var especialidade = await ProfissionalRepository.BuscarEspecialidade(requestEspecialidade);
+            var especialidadeDomain = await ProfissionalRepository.BuscarEspecialidadePorId(especialidade);
 
-            if (especialidade is null) throw new EspecialidadeNaoEncontradaException(requestEspecialidade);
+            if (especialidadeDomain is null) throw new EspecialidadeNaoEncontradaException(especialidade);
 
-            // profissional.AdicionarEspecialidade(especialidade);
+            profissional.AdicionarEspecialidade(especialidadeDomain);
         }
-
-        // var profissionalCriado = await ProfissionalRepository.Alterar(profissional);
-
-        // return new AlterarProfissionalResponse
-        // {
-        //     Id = profissionalCriado.Id,
-        //     Nome = profissionalCriado.Nome,
-        //     UrlAmigavel = profissionalCriado.UrlAmigavel,
-        //     Sobre = profissionalCriado.Sobre,
-        //     Endereco = new EnderecoResponse(profissionalCriado.Endereco.Estado, profissionalCriado.Endereco.Cidade,
-        //         profissionalCriado.Endereco.Logradouro, profissionalCriado.Endereco.Bairro,
-        //         profissionalCriado.Endereco.Cep),
-        //     TipoProfissionalId = profissionalCriado.TipoProfissional.Id,
-        //     UnidadeId = profissionalCriado.UnidadeId,
-        //     ImagemUrlPerfil = profissionalCriado.ImagemUrlPerfil,
-        //     Conselho = profissionalCriado.Conselho,
-        //     NumeroIdentificacao = profissionalCriado.NumeroIdentificacao,
-        //     Telefone = profissionalCriado.Telefone,
-        //     Celular = profissionalCriado.Celular,
-        //     Email = profissionalCriado.Email,
-        //     Site = profissionalCriado.Site,
-        //     Facebook = profissionalCriado.Facebook,
-        //     Instagram = profissionalCriado.Instagram,
-        //     Youtube = profissionalCriado.Youtube,
-        //     Linkedin = profissionalCriado.Linkedin,
-        //     Recomendado = profissionalCriado.Recomendado,
-        //     Status = profissionalCriado.Status,
-        //     Especialidades = profissionalCriado.Especialidades.Select(especialidade => especialidade.Id).ToList()
-        // };
-
-        return null;
     }
 }
