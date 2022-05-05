@@ -26,10 +26,6 @@ public class ProfissionalContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // modelBuilder.Entity<Imagem>();
-        // modelBuilder.Entity<Podcast>();
-        // modelBuilder.Entity<Video>();
-
         modelBuilder.ApplyConfiguration(new EspecialidadeEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new MidiaAbstractEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new TipoMidiaEntityTypeConfiguration());
