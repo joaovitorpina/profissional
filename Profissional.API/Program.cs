@@ -6,6 +6,7 @@ using Profissional.Infrastructure.Adapters.Queries;
 using Profissional.Infrastructure.Adapters.Repositories;
 using Profissional.Infrastructure.Data;
 
+//TODO Ver erro de dependencia do relational do ef core com o projeto API
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
