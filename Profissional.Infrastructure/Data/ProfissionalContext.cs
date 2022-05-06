@@ -15,20 +15,17 @@ public class ProfissionalContext : DbContext
     public DbSet<MidiaAbstract> Midias => Set<MidiaAbstract>();
     public DbSet<TipoMidia> TiposMidia => Set<TipoMidia>();
 
+    //TODO Ajustar a connection string
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder
-            .UseMySql("server=localhost;database=profissionais;user=root;password=root",
+            .UseMySql("server=mysql;database=profissionais;user=root;password=root",
                 ServerVersion.Parse("8.0.28-mysql")).UseSnakeCaseNamingConvention();
         optionsBuilder.EnableSensitiveDataLogging();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // modelBuilder.Entity<Imagem>();
-        // modelBuilder.Entity<Podcast>();
-        // modelBuilder.Entity<Video>();
-
         modelBuilder.ApplyConfiguration(new EspecialidadeEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new MidiaAbstractEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new TipoMidiaEntityTypeConfiguration());

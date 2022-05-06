@@ -11,14 +11,14 @@ using Profissional.Infrastructure.Data;
 namespace Profissional.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ProfissionalContext))]
-    [Migration("20220504052801_BancoInicial")]
+    [Migration("20220505115759_BancoInicial")]
     partial class BancoInicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.2")
+                .HasAnnotation("ProductVersion", "6.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("EspecialidadeProfissional", b =>

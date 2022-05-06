@@ -94,9 +94,5 @@ public class ProfissionalEntityTypeConfiguration : IEntityTypeConfiguration<Doma
 
             b.Property(e => e.Principal).IsRequired();
         });
-
-        var navigation =
-            builder.Metadata.FindNavigation(nameof(Domain.Aggregates.Profissional.Profissional.Especialidades));
-        navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
     }
 }

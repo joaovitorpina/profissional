@@ -43,7 +43,8 @@ public class ProfissionalRepository : IProfissionalRepository
     public async Task<Domain.Aggregates.Profissional.Profissional?> BuscarPorId(int id)
     {
         var profissional =
-            await ProfissionalContext.Profissionais.FirstOrDefaultAsync(profissional => profissional.Id == id);
+            await ProfissionalContext.Profissionais.Include(p => p.Especialidades)
+                .FirstOrDefaultAsync(profissional => profissional.Id == id);
 
         return profissional;
     }

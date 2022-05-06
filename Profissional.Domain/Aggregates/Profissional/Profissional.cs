@@ -9,7 +9,7 @@ namespace Profissional.Domain.Aggregates.Profissional;
 public class Profissional : Entity, IAggregateRoot
 {
     private readonly HashSet<Convenio> _convenios;
-    private readonly HashSet<Especialidade> _especialidades;
+    private readonly List<Especialidade> _especialidades;
     private readonly List<MidiaAbstract> _midias;
     private readonly HashSet<Tratamento> _tratamentos;
     private readonly HashSet<Whatsapp> _whatsapps;
@@ -17,7 +17,7 @@ public class Profissional : Entity, IAggregateRoot
     protected Profissional()
     {
         _convenios = new HashSet<Convenio>();
-        _especialidades = new HashSet<Especialidade>();
+        _especialidades = new List<Especialidade>();
         _midias = new List<MidiaAbstract>();
         _tratamentos = new HashSet<Tratamento>();
         _whatsapps = new HashSet<Whatsapp>();
@@ -71,7 +71,7 @@ public class Profissional : Entity, IAggregateRoot
     public IReadOnlySet<Tratamento> Tratamentos => _tratamentos;
     public IReadOnlySet<Convenio> Convenios => _convenios;
     public IReadOnlyList<MidiaAbstract> Midias => _midias;
-    public IReadOnlySet<Especialidade> Especialidades => _especialidades;
+    public IReadOnlyList<Especialidade> Especialidades => _especialidades;
     public IReadOnlySet<Whatsapp> Whatsapps => _whatsapps;
 
     public void MudarEndereco(Endereco endereco)
@@ -207,7 +207,7 @@ public class Profissional : Entity, IAggregateRoot
     {
         if (!TipoProfissional.Especialidades.Contains(especialidade)) throw new EspecialidadeNaoPertenceException();
 
-        _especialidades.Add(especialidade);
+        if (!_especialidades.Contains(especialidade)) _especialidades.Add(especialidade);
     }
 
     public void RemoverEspecialidade(Especialidade especialidade)
